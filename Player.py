@@ -1,17 +1,19 @@
 class player:
-    #CartObj é a carta objetivo do jogador, alive é bolleano(se ainda está no jogo) e cor é a cor do exécito
-    #não sei qual seria a melhor maneira de conectar o player com os territórios que ele possui
-    #por enquanto vou supor que o território terá como atributo a cor do player que o tem
+    #CartObj ï¿½ a carta objetivo do jogador, alive ï¿½ bolleano(se ainda estï¿½ no jogo) e cor ï¿½ a cor do exï¿½cito
+    #nï¿½o sei qual seria a melhor maneira de conectar o player com os territï¿½rios que ele possui
+    #por enquanto vou supor que o territï¿½rio terï¿½ como atributo a cor do player que o tem
     def criarPlayer(self, CartObj , alive, cor):
         self.CartaObj = CartObj
-        self.alive = alive
-        self.cor
+        self.alive    = alive
+        self.cor      = cor
+
+        self.territorios = []
         pass
     
     def domina(self, n_territorios):
         self.n_territorios = n_territorios
     
-    #implementar função que checa se ele dominou um continente(cada continente oferece bonus de tropa)
+    #implementar funï¿½ï¿½o que checa se ele dominou um continente(cada continente oferece bonus de tropa)
 
 
 

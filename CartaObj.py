@@ -1,6 +1,16 @@
+from typing import List , Any
+
 class cartaObj():
-    #carta de objetivo deve ter texto(descrição que os player irão ler),imagem(png da carta)
-    # e condição de vitória(acho que vai ser individual,provavelmente teremos que criar isso na mão)
+
+    @staticmethod
+    def gerar_cartas() -> List[ Any ]:
+        
+        '''
+        inicializa todas as cartas objetivo para os players
+        '''
+
+    #carta de objetivo deve ter texto(descriï¿½ï¿½o que os player irï¿½o ler),imagem(png da carta)
+    # e condiï¿½ï¿½o de vitï¿½ria(acho que vai ser individual,provavelmente teremos que criar isso na mï¿½o)
     def criarCartaObj(self, texto, imagem):
         self.texto = texto
         self.imagem = imagem
