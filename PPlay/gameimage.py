@@ -45,7 +45,7 @@ class GameImage():
         
 
     """Draws the image on the screen"""
-    def draw(self):
+    def draw(self, wd):
         # A instance of the Window screen
         # Window object must've been instatiated
         # draw_rect is necessary to readjust the image position given .x and .y

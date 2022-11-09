@@ -1,18 +1,15 @@
-from PPlay.gameimage import *
 from PPlay.mouse import *
 from button import Button
-import globals
+
 
 class MainMenu:
     def __init__(self):
-        self.background = GameImage("assets/war.png")
-        self.play_btn = Button("assets/play.png", 230, 250)
-        self.mouse = Mouse()
+        self.background = pygame.image.load("assets/war-mm.png").convert_alpha()
+        self.start_game_img = pygame.image.load("assets/play.png").convert_alpha()
+        self.start_game_btn = Button(650, 350, self.start_game_img)
+        self.exit_game_img = pygame.image.load("assets/exit.png").convert_alpha()
+        self.exit_game_btn = Button(650, 500, self.exit_game_img)
+        self.rect = self.background.get_rect()
 
-    def run(self):
-        self.background.draw()
-        self.play_btn.draw()
-
-        if self.mouse.is_over_object(self.play_btn):
-            if self.mouse.is_button_pressed(1):
-                globals.GAME_STATE = 1
+    def run(self, scr):
+        scr.blit(self.background, self.rect)
