@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from random import random
+from collections import deque
 
 import Player
 import CartaObj
@@ -78,14 +79,13 @@ class partida:
         # distribuicao de territorios 
         territorios = territorio.get_territorios()
         random.shuffle( territorios )
-        total_players = self.v_player + self.npcs     # Total de membros na partida
-        for i , terr in range(len(territorios)):
-            territorio[x].cor = self.n_players[y].cor
-            territorio[x].tropas = 1
-            if(y < (n_humans - 1)):
-                y += 1
-            else:
-                y = 0
+        players = deque( self.v_player + self.npcs )    # Total de membros na partida
+        for terr in territorios:
+            player = players[ 0 ]
+            terr.player = player
+            terr.tropas = 1
+            player.territorios.append( terr )
+            players.rotate()
 
         #come�ar a primeira rodada(ela s� ter� a primeira fase(calcular/ganhar tropas e coloc�-las no territ�rio escolhido pelos players)
         self.Prodada()

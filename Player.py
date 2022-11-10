@@ -1,19 +1,54 @@
 class player:
-    #CartObj � a carta objetivo do jogador, alive � bolleano(se ainda est� no jogo) e cor � a cor do ex�cito
-    #n�o sei qual seria a melhor maneira de conectar o player com os territ�rios que ele possui
-    #por enquanto vou supor que o territ�rio ter� como atributo a cor do player que o tem
-    def criarPlayer(self, CartObj , alive, cor):
+
+    def __init__( self , CartObj , alive , cor ):
+
         self.CartaObj = CartObj
         self.alive    = alive
         self.cor      = cor
 
         self.territorios = []
+
+        # ----------------------------------------------------------------------------------------
+        # territorio controlados por adversários, que fazem fronteira com o território do player
+        self.border_territory = set() 
         pass
     
-    def domina(self, n_territorios):
-        self.n_territorios = n_territorios
+    def get_border_territory( self ):
+
+        if self.border_territory:
+            return
+        
+        terr_set = set( self.territorios )
+        for terr in terr_set:
+            viz = set( terr.vizinhos )
+            self.border_territory += viz - terr_set
     
-    #implementar fun��o que checa se ele dominou um continente(cada continente oferece bonus de tropa)
+    def add_territory( self , terr ):
 
+        if terr in self.territorios:
+            return
+        
+        self.territorios.append( terr )
+        self.update_border( terr )
+    
+    def rmv_territory( self , terr ):
 
+        if not( terr in self.territorios ):
+            return
+        
+        self.territorios.remove( terr )
+        self.update_border( terr , add = False )
 
+    def update_border( self , terr , add = True ):
+
+        #-----------------------------------------------------------
+        # Quando adicionar ou remover o território, o conjunto dos territórios
+        # adjacentes deve ser atualizado
+        border_set = self.border_territory
+        terr_set   = set( self.territorios )
+        viz_ter    = set( terr.vizinhos )
+
+        if add:
+            self.border_territory = border_set - { terr } + ( viz_ter - terr_set )
+        else:
+            pass
