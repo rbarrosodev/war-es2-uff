@@ -6,11 +6,13 @@ class territorio:
     def get_territorios():
 
         terr_df = pd.read_csv("Mapa/Territorios.csv")
-        terr_df.set_index( "Id" )
+        terr_df.set_index( "Id" , inplace = True )
+
         ter_d = {}
         for i , rec in terr_df.iterrows():
             nome = rec["Nome"]
-            terr = territorio( nome , i )
+            cont = rec["Continente_id"]
+            terr = territorio( nome , i , cont )
             ter_d[ i ] = terr
         
         border_df = pd.read_csv("Mapa/Fronteiras.csv")
@@ -27,17 +29,29 @@ class territorio:
         
         return list( ter_d.values() )
 
-    def __init__( self , nome , idt , vizinhos = None ):
+    def __init__( self , nome , idt , continente ,vizinhos = None ):
 
         self.nome = nome 
         self.idt = idt
         if vizinhos is None:
             vizinhos = list() 
         self.vizinhos = vizinhos 
-        
-        self.tropas = 0
+        self.continente = continente
+
+        self.tropas = 1
         self.player = None
     
     def __hash__(self):
         return hash( self.idt )
 
+    def __str__( self ):
+
+        s = [
+        "-"*50,
+        f"Nome = {self.nome}",
+        f"idt = {self.idt}",
+        f"tropas = {self.tropas}",
+        f"continente = {self.continente}"
+        ]
+        
+        return '\n'.join( s )

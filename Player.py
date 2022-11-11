@@ -21,7 +21,7 @@ class player:
         terr_set = set( self.territorios )
         for terr in terr_set:
             viz = set( terr.vizinhos )
-            self.border_territory += viz - terr_set
+            self.border_territory = self.border_territory + viz - terr_set
     
     def add_territory( self , terr ):
 
