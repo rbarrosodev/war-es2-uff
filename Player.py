@@ -10,9 +10,16 @@ class player:
 
         # ----------------------------------------------------------------------------------------
         # territorio controlados por adversários, que fazem fronteira com o território do player
-        self.border_territory = set() 
+        self.border_territory = set()
+
+        #-----------------------------------------------------------------------------------------
+        # Reforços que podem ser que podem ser alocados ao inicio da rodada
+        self.reserves = 0
+
         pass
     
+    ###### GESTAO DE TERRITORIOS ####################
+
     def get_border_territory( self ):
 
         if self.border_territory:
@@ -52,3 +59,42 @@ class player:
             self.border_territory = border_set - { terr } + ( viz_ter - terr_set )
         else:
             pass
+    
+    ############################# GESTAO DE EXERCITOS ##################################
+
+    def allocate_reserve( self , terr ):
+
+        if terr not in self.territorios:
+            raise ValueError( f"Esse player não tem o territorio {terr.nome}" )
+        
+        if self.reserves == 0:
+            return
+        
+        self.reserves -= 1
+        terr.tropas += 1
+
+    def move_army_terr( self , terr_start , terr_end ):
+
+        #---------------------------------------------------------------
+        # Ambos territorios devem estar sob posse do jogador
+        for terr in ( terr_start , terr_end ):
+            if terr not in self.territorios:
+                raise ValueError( f"Esse player não tem o territorio {terr.nome}" )
+        
+        #--------------------------------------------------------------
+        # O territorio de origem nao pode estar sem tropas.
+        if terr_start.tropas == 1:
+            raise ValueError(
+                f"O territorio {terr_start.nome} não tem nenhuma tropa"
+            )
+
+        #-------------------------------------------------------------
+        # Os territorios em questão devem fazer fronteira um com outro
+        if terr_start not in set( terr_end.vizinhos):
+            raise ValueError(
+                f"{terr_start} nao é um territorio adjacente a {terr_end.nome}" 
+            )
+        
+        terr_start.tropas -= 1
+        terr_end.tropas -= 1
+        
