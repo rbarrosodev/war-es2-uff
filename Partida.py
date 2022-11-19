@@ -1,6 +1,8 @@
 from asyncio.windows_events import NULL
+from pickle import TRUE
 from random import random
 from collections import deque
+from re import A
 
 import Player
 import CartaObj
@@ -87,9 +89,113 @@ class partida:
             terr.tropas = 1
             player.territorios.append( terr )
             players.rotate()
-
-    def distribuir_exercito( self ):
-        
+        #primeira rodada
+        x = player.territorios[0]
         min_terr = 3
         for player in ( self.player + self.npcs ):
             player.reserves = max( len( player.territorios )//2 , min_terr )
+            #o player.reserves são as tropas que o player ganha
+            #fazer com que o usuário escolha onde colocar as tropas
+            while(player.reserves != 0):
+                print("Escolha 1 territorio para adicionar uma tropa")
+                #mudar esse print e input 
+                input(x)
+                x.tropas += 1
+                player.reserves -= 1
+        self.distribuir_exercito(self.v_player[0], self)
+
+    #fase de distribuição
+    def distribuir_exercito(player, self ):
+        x = player.territorios[0]
+        min_terr = 3
+        player.reserves = max( len( player.territorios )//2 , min_terr )
+        #considerar continente
+        #lidar com as cartas
+        #o player.reserves são as tropas que o player ganha
+        #fazer com que o usuário escolha onde colocar as tropas
+        while(player.reserves != 0):
+            print("Escolha 1 territorio para adicionar uma tropa")
+            #mudar esse print e input 
+            input(x)
+            x.tropas += 1
+            player.reserves -= 1
+        self.combate(self, player)
+
+    #fase de combate
+    def combate(self, player):
+        y = False
+        x = player.territorios[0]
+        for x in player.territorios:
+            if(x.tropas > 1):
+                y = True
+        while(y == True):
+            print("Voce deseja atacar?")
+            input(y)
+            if(y == True):
+                z = False
+                while(z == False):
+                    choice = player.territorios[0]
+                    print("Escolha o territorio do qual o ataque se originará")
+                    input(choice)
+                    if(choice.tropas > 1):
+                        t = 1
+                        print("Quantas tropas voce irá usar?")
+                        input(t)
+                        while(t >= choice.tropas or t < 1):
+                            print("Número inválido,tente novamente")
+                            print("Quantas tropas voce irá usar?")
+                            input(t)
+                        enemy = choice.vizinho[0]
+                        print("Qual território voce irá atacar?")
+                        input(enemy)
+                        while(enemy.cor == choice.cor):
+                            print("Território inválido,tente novamente")
+                            print("Qual território voce irá atacar?")
+                            input(enemy)
+                        while(t > 0 or enemy.tropas > 0):
+                            attack = random.randint(1,6)
+                            defense = random.radint(1,6)
+                            if(attack > defense):
+                                enemy.tropas -= 1
+                            else:
+                                t -= 1
+                        z = True
+                    else:
+                        print("Territorio inválido, tente novamente")
+        #checar se o player ganhou
+        self.movimento(player, self)
+
+    #fase de movimentação
+    def movimento(player, self):
+        y = player.territorios[0]
+        x = True
+        print("Você deseja movimentar alguma tropa")
+        input(x)
+        while(x == TRUE):
+             print("Escolha 1 territorio para mover uma tropa")
+             input(y)
+             if(y.tropas < 2 or y.vizinho == None):
+                 print("O movimento é inválido")
+             else:
+                 z = player.territorios[0].vizinho[0]
+                 m = False
+                 for z in y.vizinho:
+                     if(y.z.cor == player.cor):
+                         m = True
+                 if(m == True):
+                     y.tropas -= 1
+                     print("Escolha o territorio vizinho que a tropa irá se mover")
+                     input(y)
+                     y.tropas += 1
+                 else:
+                     print("O movimento é inválido")
+             print("Você deseja movimentar alguma tropa")
+             input(x)
+        y = -1
+        for x in self.v_player:
+            y +=1
+            if(x == player):
+                if(x == self.v_player[self.n_players]):
+                    self.distribuir_exercito(self.v_player[0], self)
+                else:
+                    self.distribuir_exercito(self.v_player[y+1], self)
