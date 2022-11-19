@@ -10,9 +10,10 @@ CORES = [ "branco" , "preto" , "vermelho" , "azul", "amarelo" , "verde" ]
 class partida:
     def __init__(self ,n_humans, n_players = 6 ):
 
-        self.n_players = min( n_players , 6 ) 
-        self.n_humans  = min( n_humans , n_players )  # num de players
-        self.n_npcs    = n_players - n_humans         # num de ias 
+        self.n_players  = min( n_players , 6 ) 
+        self.n_humans   = min( n_humans , n_players )  # num de players
+        self.n_npcs     = n_players - n_humans         # num de ias
+        self.num_rodada = 0 
 
         # ---------------------------------------------------------------------------------------
         # essa parte deveria checar se existe um n�mero suficiente de jogadores para jogar o jogo
@@ -87,37 +88,8 @@ class partida:
             player.territorios.append( terr )
             players.rotate()
 
-        #come�ar a primeira rodada(ela s� ter� a primeira fase(calcular/ganhar tropas e coloc�-las no territ�rio escolhido pelos players)
-        self.Prodada()
-
-    #primeira rodada
-    def Prodada(self):
-        #aqui eu iria calcular o numero de tropas que cada jogador iria ganhar[criar uma fun��o em player] e
-        #escolher onde colocar cada 1
-        #falta implementar IA
-        x = 0
-        for x in range(self.n_humans):
-            #reforco seria substituido pelo metodo
-            print("Player %d possui %d tropas, escolha onde coloc�-las", x, reforco) 
-            #aqui seria implementado colocar as tropas nos territorios desejados 
-        #come�ar segunda rodada e loop(todas as outras ser�o iguais)
-        #duas ideias:o que eu fiz aqui embaixo ou cada rodada(se ninguem ganhar) chama rodada(proximo player)
-        #criar condi��o para acabar a partida(ultimo jogador humano sair,apenas 1 jogador estar vivo,jogoador completar objetivo)
-        victory = False
-        x = 0
-        while(victory == False):
-            rodada(v_players[x])
-            if(x < (self.n_players - 1)):
-                x += 1
-            else:
-                x = 0
-
-    def rodada(self, player):
-        #aqui teria tres estagios.o primeiro seria calcular refor�o e escolher onde colocar as tropas ganhas
-        #segundo seria combate
-        #terceiro seria mover as tropas para territ�rios adjacentes que sejam pertencentes ao jogador
-        x = 0#placeholder
-
-    #aqui deveria finalizar a partida(n�o sei se funciona assim)
-    def Finalizar(self):
-        self = NULL
+    def distribuir_exercito( self ):
+        
+        min_terr = 3
+        for player in ( self.player + self.npcs ):
+            player.reserves = max( len( player.territorios )//2 , min_terr )
