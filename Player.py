@@ -2,10 +2,15 @@ class player:
 
     def __init__( self , CartObj , alive , cor ):
 
-        self.CartaObj = CartObj
+        self.CartaObj = CartObj # objetivo
         self.alive    = alive
-        self.cor      = cor
 
+        #---------------------------------------------------
+        # pra aparecer no mapa
+        self.cor = cor
+
+        #------------------------------------------------------
+        # Sob o controle do player
         self.territorios = []
 
         # ----------------------------------------------------------------------------------------
@@ -22,15 +27,25 @@ class player:
 
     def get_border_territory( self ):
 
+        '''
+        Acha todos os territorios que sao fronteiricos aos territorios 
+        do player
+        '''
+
         if self.border_territory:
             return
         
         terr_set = set( self.territorios )
         for terr in terr_set:
             viz = set( terr.vizinhos )
-            self.border_territory = self.border_territory + viz - terr_set
+            self.border_territory = ( self.border_territory | viz ) - terr_set
     
     def add_territory( self , terr ):
+        
+        '''
+        Adiciona um novo territorio a lista do player e atualiza o conjunto
+        de fronteiras como efeito colateral.
+        '''
 
         if terr in self.territorios:
             return
@@ -39,6 +54,11 @@ class player:
         self.update_border( terr )
     
     def rmv_territory( self , terr ):
+        
+        '''
+        Remove um territorio da lista do player e atualiza o conjunto
+        de fronteiras como efeito colateral.
+        '''
 
         if not( terr in self.territorios ):
             return
@@ -58,7 +78,11 @@ class player:
         if add:
             self.border_territory = border_set - { terr } + ( viz_ter - terr_set )
         else:
-            pass
+            #-----------------------------------------------------------
+            # Solução de força bruta, achar solução otimizada quando
+            # tiver tempo.
+            self.border_territory = set()
+            self.get_border_territory()
     
     ############################# GESTAO DE EXERCITOS ##################################
 
