@@ -7,7 +7,7 @@ from re import A
 
 import Player
 import CartaObj
-import territorio
+from territorio import territorio
 
 CORES = [ "branco" , "preto" , "vermelho" , "azul", "amarelo" , "verde" ]
 class partida:
@@ -82,7 +82,6 @@ class partida:
         # ---------------------------------------------------------------------
         # distribuicao de territorios 
         territorios = territorio.get_territorios()
-        print(territorios)
         random.shuffle( territorios )
         players = deque( self.v_player + self.npcs )    # Total de membros na partida
         for terr in territorios:
