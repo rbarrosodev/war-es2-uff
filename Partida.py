@@ -100,20 +100,16 @@ class partida:
         self.players_list = list(players)
 
         #Inicio do jogo
-        
-        x = player.territorios[0]
-        min_terr = 3
         for player in (self.players_list):
-            player.reserves = max( len( player.territorios )//2 , min_terr )
-            #o player.reserves são as tropas que o player ganha
-            #fazer com que o usuário escolha onde colocar as tropas
-            while(player.reserves != 0):
-                print("Escolha 1 territorio para adicionar uma tropa")
-                #mudar esse print e input 
-                input(x)
-                x.tropas += 1
-                player.reserves -= 1
-        self.distribuir_exercito(self.v_player[0], self)
+            #Para debug
+            player.print_territories_names()
+
+            player.reserves = player.get_round_reserve()
+            player.allocate_reserve_loop()
+            
+
+        
+                
 
 
     #fase de distribuição
@@ -211,6 +207,14 @@ class partida:
                     self.distribuir_exercito(self.v_player[0], self)
                 else:
                     self.distribuir_exercito(self.v_player[y+1], self)
+    
+
+    def get_allocate_reserve_input(self):
+        #Mudar essa função depois para receber inputs por clique no mapa e input na tela
+        id = int(input("Escolha o ID de um território: "))
+        amount = int(input("Escolha a quantidade de tropas para colocar: "))
+
+        return self.territorios_dict[id], amount
 
     
 

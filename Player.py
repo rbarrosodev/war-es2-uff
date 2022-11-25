@@ -21,6 +21,9 @@ class player:
         # Reforços que podem ser que podem ser alocados ao inicio da rodada
         self.reserves = 0
 
+        #Contagem de quantas trocas de carta de território já foram feitas
+        card_exchange = 0
+
         self.is_npc = is_npc
 
         pass
@@ -89,16 +92,43 @@ class player:
     ############################# GESTAO DE EXERCITOS ##################################
 
     def allocate_reserve( self , terr, amount ):
-
+        #Raise trocado por print para não parar a run
         if terr not in self.territorios:
-            raise ValueError( f"Esse player não tem o territorio {terr.nome}" )
+            print( f"Esse player não tem o territorio {terr.nome}" )
+            return False
         
+        print(self)
         if self.reserves < amount:
-            raise ValueError( f"Esse player não reservas suficientes {str(self.reserves)} < {str(amount)}" )
+            print( f"Esse player não reservas suficientes {str(self.reserves)} < {str(amount)}" )
+            return False
         
         
         self.reserves -= amount
         terr.tropas += amount
+    
+    def allocate_reserve_loop(self):
+        while(self.reserves != 0):
+            territory, amount = self.get_allocate_reserve_input()
+            self.allocate_reserve(territory, amount)
+    
+    #Função para pegar numero de novos soldados no começo do round
+    def get_round_reserve(self):
+        return max( len( self.territorios )//2 , 3)
+    
+    #Função para trocar carta de território por nova reserva
+    def exchange_card(self):
+        self.card_exchange += 1
+        #Regra tirada da tabela do jogo:
+        if self.card_exchange <= 5:
+            #4, 6, 8, 10, 12
+            self.reserves += 4 + 2 * (self.card_exchange - 1)
+        elif self.card_exchange == 6:
+            self.reserves += 15
+        else:
+            #25, 30, 35 ...
+            self.reserves += 5 * (self.card_exchange - 2)
+
+        #Falta mplementar remoção das cartas do player ..
 
     def move_army_terr( self , terr_start , terr_end ):
 
@@ -123,12 +153,11 @@ class player:
             )
         
         terr_start.tropas -= 1
-        terr_end.tropas -= 1
-    
+        terr_end.tropas -= 1  
 
     #Para debug
-    def print_territory_names(self):
+    def print_territories_names(self):
         print("Jogador: " + str(self.cor))
         for i in self.territorios:
-            print(i.nome)
+            print(str(i.idt) + ": " + i.nome)
         
