@@ -88,16 +88,17 @@ class player:
     
     ############################# GESTAO DE EXERCITOS ##################################
 
-    def allocate_reserve( self , terr ):
+    def allocate_reserve( self , terr, amount ):
 
         if terr not in self.territorios:
             raise ValueError( f"Esse player não tem o territorio {terr.nome}" )
         
-        if self.reserves == 0:
-            return
+        if self.reserves < amount:
+            raise ValueError( f"Esse player não reservas suficientes {str(self.reserves)} < {str(amount)}" )
         
-        self.reserves -= 1
-        terr.tropas += 1
+        
+        self.reserves -= amount
+        terr.tropas += amount
 
     def move_army_terr( self , terr_start , terr_end ):
 

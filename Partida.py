@@ -99,7 +99,8 @@ class partida:
         #Lista geral (players + npc)
         self.players_list = list(players)
 
-        #primeira rodada
+        #Inicio do jogo
+        
         x = player.territorios[0]
         min_terr = 3
         for player in (self.players_list):
@@ -211,19 +212,5 @@ class partida:
                 else:
                     self.distribuir_exercito(self.v_player[y+1], self)
 
-    #Função base para colocar exercito em um territorio
-    def colocar_exercito(player, territorio, quantidade):
-        #Dado um player e um território:
-        # - testar se o território é dele
-        # - testar se o player possui reservas suficientes
-        # - colocar tropas no território
-        if territorio.player != player:
-            print("Território não é deste player")
-            return
-        
-        if player.reserves < quantidade:
-            print("Player não possui quantidade necessária de tropas")
-            return
-        
-        territorio.tropas += quantidade
-        player.reserves -= quantidade
+    
+
