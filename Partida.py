@@ -21,6 +21,7 @@ class partida:
         self.npcs = []
         #players + npc
         self.players_list = []
+        self.territorios_dict = {} #Dicionario de territórios para ser acessado pela partida
 
         # ---------------------------------------------------------------------------------------
         # essa parte deveria checar se existe um n�mero suficiente de jogadores para jogar o jogo
@@ -85,7 +86,7 @@ class partida:
 
         # ---------------------------------------------------------------------
         # distribuicao de territorios 
-        territorios = territorio.get_territorios()
+        self.territorios_dict, territorios = territorio.get_territorios()
         random.shuffle( territorios )
         players = deque( self.v_player + self.npcs )    # Total de membros na partida
         for terr in territorios:
@@ -95,10 +96,8 @@ class partida:
             player.territorios.append( terr )
             players.rotate()
         
-        #Lista players + npc
+        #Lista geral (players + npc)
         self.players_list = list(players)
-        for i in self.players_list:
-            print(i.cor + ": "+str(i.is_npc))
 
         #primeira rodada
         x = player.territorios[0]
@@ -114,6 +113,7 @@ class partida:
                 x.tropas += 1
                 player.reserves -= 1
         self.distribuir_exercito(self.v_player[0], self)
+
 
     #fase de distribuição
     def distribuir_exercito(player, self ):
@@ -210,3 +210,20 @@ class partida:
                     self.distribuir_exercito(self.v_player[0], self)
                 else:
                     self.distribuir_exercito(self.v_player[y+1], self)
+
+    #Função base para colocar exercito em um territorio
+    def colocar_exercito(player, territorio, quantidade):
+        #Dado um player e um território:
+        # - testar se o território é dele
+        # - testar se o player possui reservas suficientes
+        # - colocar tropas no território
+        if territorio.player != player:
+            print("Território não é deste player")
+            return
+        
+        if player.reserves < quantidade:
+            print("Player não possui quantidade necessária de tropas")
+            return
+        
+        territorio.tropas += quantidade
+        player.reserves -= quantidade
