@@ -1,6 +1,6 @@
 class player:
 
-    def __init__( self , CartObj , alive , cor ):
+    def __init__( self , CartObj , alive , cor, is_npc ):
 
         self.CartaObj = CartObj # objetivo
         self.alive    = alive
@@ -20,6 +20,8 @@ class player:
         #-----------------------------------------------------------------------------------------
         # Reforços que podem ser que podem ser alocados ao inicio da rodada
         self.reserves = 0
+
+        self.is_npc = is_npc
 
         pass
     
@@ -121,4 +123,11 @@ class player:
         
         terr_start.tropas -= 1
         terr_end.tropas -= 1
+    
+
+    #Para debug
+    def print_territory_names(self):
+        print("Jogador: " + str(self.cor))
+        for i in self.territorios:
+            print(i.nome)
         

@@ -16,7 +16,11 @@ class partida:
         self.n_players  = min( n_players , 6 ) 
         self.n_humans   = min( n_humans , n_players )  # num de players
         self.n_npcs     = n_players - n_humans         # num de ias
-        self.num_rodada = 0 
+        self.num_rodada = 0
+        self.v_player = []
+        self.npcs = []
+        #players + npc
+        self.players_list = []
 
         # ---------------------------------------------------------------------------------------
         # essa parte deveria checar se existe um n�mero suficiente de jogadores para jogar o jogo
@@ -68,7 +72,7 @@ class partida:
         # criar jogadores
         self.v_player = []
         for cor , card in zip( cores_escolhidas , self.goal_cards[ :self.n_humans ] ):
-            self.v_player.append( Player.player( card, True, cor ) )
+            self.v_player.append( Player.player( card, True, cor, False ) )
 
         # ---------------------------------------------------------------------
         # inicializar npc
@@ -77,7 +81,7 @@ class partida:
             remaining_colors = [ cor for i , cor in enumerate( CORES ) if cores_disponiveis[ i ] ]
             npc_goal_cards   = self.goal_cards[ self.n_humans: ]
             for cor , card in zip( remaining_colors , npc_goal_cards ):
-                self.npcs.append( None ) # aqui fazer o append do npc
+                self.npcs.append( Player.player( card, True, cor, True )  ) 
 
         # ---------------------------------------------------------------------
         # distribuicao de territorios 
@@ -90,10 +94,16 @@ class partida:
             terr.tropas = 1
             player.territorios.append( terr )
             players.rotate()
+        
+        #Lista players + npc
+        self.players_list = list(players)
+        for i in self.players_list:
+            print(i.cor + ": "+str(i.is_npc))
+
         #primeira rodada
         x = player.territorios[0]
         min_terr = 3
-        for player in ( self.player + self.npcs ):
+        for player in (self.players_list):
             player.reserves = max( len( player.territorios )//2 , min_terr )
             #o player.reserves são as tropas que o player ganha
             #fazer com que o usuário escolha onde colocar as tropas
