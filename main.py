@@ -9,6 +9,7 @@ from button import Button
 import globals
 from main_menu import MainMenu
 from game import Game
+import Partida
 
 mainClock = pygame.time.Clock()
 pygame.init()
@@ -23,6 +24,7 @@ while globals.GAME_STATE != 5:
         main_menu.run(screen)
     if main_menu.start_game_btn.draw(screen):
         globals.GAME_STATE = 1
+        p = Partida.partida(6, 6)
     if main_menu.exit_game_btn.draw(screen):
         pygame.quit()
         sys.exit()

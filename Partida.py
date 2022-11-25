@@ -1,6 +1,7 @@
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 from pickle import TRUE
-from random import random
+import random
+
 from collections import deque
 from re import A
 
@@ -81,6 +82,7 @@ class partida:
         # ---------------------------------------------------------------------
         # distribuicao de territorios 
         territorios = territorio.get_territorios()
+        print(territorios)
         random.shuffle( territorios )
         players = deque( self.v_player + self.npcs )    # Total de membros na partida
         for terr in territorios:
