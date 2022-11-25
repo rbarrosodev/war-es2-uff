@@ -107,27 +107,20 @@ class partida:
             player.reserves = player.get_round_reserve()
             player.allocate_reserve_loop()
             
+    #Fase inicial da rodada
+    def fase_de_tropas(self):
+        for player in (self.players_list):
+            #Para debug
+            player.print_territories_names()
 
-        
-                
+            #Receber exercitos
+            player.reserves = player.get_round_reserve()
 
+            #Troca de cartas
+            #Realizar troca de cartas de território, se possivel, para aumentar as reservas
 
-    #fase de distribuição
-    def distribuir_exercito(player, self ):
-        x = player.territorios[0]
-        min_terr = 3
-        player.reserves = max( len( player.territorios )//2 , min_terr )
-        #considerar continente
-        #lidar com as cartas
-        #o player.reserves são as tropas que o player ganha
-        #fazer com que o usuário escolha onde colocar as tropas
-        while(player.reserves != 0):
-            print("Escolha 1 territorio para adicionar uma tropa")
-            #mudar esse print e input 
-            input(x)
-            x.tropas += 1
-            player.reserves -= 1
-        self.combate(self, player)
+            #Colocar exercitos nos territórios
+            player.allocate_reserve_loop()
 
     #fase de combate
     def combate(self, player):
