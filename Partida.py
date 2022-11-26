@@ -101,15 +101,19 @@ class partida:
 
         #Inicio do jogo
         for player in (self.players_list):
-            #Para debug
-            player.print_territories_names()
+            if not player.is_npc: 
+                #Para debug
+                player.print_territories_names()
 
-            player.reserves = player.get_round_reserve()
-            player.allocate_reserve_loop()
+                player.reserves = player.get_round_reserve()
+                player.allocate_reserve_loop()
+            else:
+                #Realizar Lógica da IA para colocar tropas
+                pass
             
     #Fase inicial da rodada
-    def fase_de_tropas(self):
-        for player in (self.players_list):
+    def fase_de_tropas(self, player):
+        if not player.is_npc:
             #Para debug
             player.print_territories_names()
 
@@ -121,50 +125,94 @@ class partida:
 
             #Colocar exercitos nos territórios
             player.allocate_reserve_loop()
+        else:
+            #Realizar Lógica da IA para colocar tropas
+            pass 
+    
+    #Função base para o combate , retorna verdadeiro apenas se o território alvo não tiver mais tropas para defender
+    def attack_territory(self, origin, target, amount):
+        if target not in origin.vizinhos:
+            print("Territórios não fazem fronteira")
+            return
+        
+        if amount < 2:
+            print("são necessários mais tropas para atacar")
+            return
+        
+        #Realizar combate
+        attack_dices = self.get_actual_combat_troops(amount)
+        defense_dices = self.get_actual_combat_troops(target.tropas)
+
+        attack_dice_list = [random.randint(1,6) for i in range(attack_dices)]
+        defense_dice_list = [random.randint(1,6) for i in range(defense_dices)]
+
+        attack_dice_list.sort()
+        defense_dice_list.sort()
+
+        #Guardar defesas
+        attack_losses = 0
+        defense_losses = 0
+
+        for i in range(min(attack_dice_list, defense_dice_list)):
+            #São comparados com a regra do war
+            if attack_dice_list[i] > defense_dice_list[i]:
+                #Esse dado de ataque ganhou
+                defense_losses -= 1
+            else:
+                attack_losses -= 1
+        
+        #Atualizar tropas em cada território
+        origin.tropas -= attack_losses
+        target.tropas -= defense_losses
+        
+        #Testar se território foi capturado
+        if target.tropas == 0:
+            return True
+        else:
+            return False
 
     #fase de combate
     def combate(self, player):
-        y = False
-        x = player.territorios[0]
-        for x in player.territorios:
-            if(x.tropas > 1):
-                y = True
-        while(y == True):
-            print("Voce deseja atacar?")
-            input(y)
-            if(y == True):
-                z = False
-                while(z == False):
-                    choice = player.territorios[0]
-                    print("Escolha o territorio do qual o ataque se originará")
-                    input(choice)
-                    if(choice.tropas > 1):
-                        t = 1
-                        print("Quantas tropas voce irá usar?")
-                        input(t)
-                        while(t >= choice.tropas or t < 1):
-                            print("Número inválido,tente novamente")
-                            print("Quantas tropas voce irá usar?")
-                            input(t)
-                        enemy = choice.vizinho[0]
-                        print("Qual território voce irá atacar?")
-                        input(enemy)
-                        while(enemy.cor == choice.cor):
-                            print("Território inválido,tente novamente")
-                            print("Qual território voce irá atacar?")
-                            input(enemy)
-                        while(t > 0 or enemy.tropas > 0):
-                            attack = random.randint(1,6)
-                            defense = random.radint(1,6)
-                            if(attack > defense):
-                                enemy.tropas -= 1
-                            else:
-                                t -= 1
-                        z = True
-                    else:
-                        print("Territorio inválido, tente novamente")
-        #checar se o player ganhou
-        self.movimento(player, self)
+        if not player.is_npc:
+            while(player.available_for_attack()):
+                #Receber origem do ataque
+                #Receber alvo do ataque
+                #Receber quantidade de tropas utilizadas
+
+                #Para debug
+                player.print_territories_names()
+
+                #Mudar depois para receber com clique do mouse os inputs
+                origin_id = int(input("ID do território de origem"))
+                origin_territory = self.territorios_dict[origin_id]
+
+                origin_territory.print_neighbors_names()
+                
+                target_id = int(input("ID do território alvo do ataque"))
+
+                target_territory = self.territorios_dict[target_id]
+
+                amount = int(input("Quantidade de tropas para se utilizar"))
+                if amount > origin_territory.tropas:
+                    print("Numero de tropas indisponiveis nesse territorio")
+                    #Passa para próxima iteração do loop
+                    continue 
+
+                target_has_no_troops_left = self.attack_territory(origin_territory, target_territory, amount)
+
+                #Ganhou o território
+                if target_has_no_troops_left:
+                    #Implementar mover possível para o território
+                    pass
+
+                #Testar se quer parar de atacar
+                #Modificar input para clique do mouse
+                if int(input("Se deseja parar de atacar digite 0") == 0):
+                    break
+        else:
+            #Realizar Lógica da IA para combate
+            pass
+        
 
     #fase de movimentação
     def movimento(player, self):
@@ -200,7 +248,15 @@ class partida:
                     self.distribuir_exercito(self.v_player[0], self)
                 else:
                     self.distribuir_exercito(self.v_player[y+1], self)
+         
     
+    #Função para retornar numero de dados em combate
+    def get_actual_combat_troops(amount):
+        if amount < 4:
+            #Se forem até 3 tropas atacando:
+            return amount - 1
+        else:
+            return 3
 
     def get_allocate_reserve_input(self):
         #Mudar essa função depois para receber inputs por clique no mapa e input na tela
@@ -208,6 +264,10 @@ class partida:
         amount = int(input("Escolha a quantidade de tropas para colocar: "))
 
         return self.territorios_dict[id], amount
+
+
+    def game_loop(self):
+        pass
 
     
 

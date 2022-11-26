@@ -153,11 +153,20 @@ class player:
             )
         
         terr_start.tropas -= 1
-        terr_end.tropas -= 1  
+        terr_end.tropas -= 1
+
+    #Testar se tem tropas disponiveis para ataque
+    def available_for_attack(self):
+        for i in self.territorios:
+            if i.tropas > 1 : return True
+        
+        return False
 
     #Para debug
     def print_territories_names(self):
         print("Jogador: " + str(self.cor))
         for i in self.territorios:
             print(str(i.idt) + ": " + i.nome)
+    
+
         
