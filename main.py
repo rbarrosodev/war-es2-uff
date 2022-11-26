@@ -24,7 +24,7 @@ while globals.GAME_STATE != 5:
         main_menu.run(screen)
     if main_menu.start_game_btn.draw(screen):
         globals.GAME_STATE = 1
-        p = Partida.partida(4, 6)
+        p = Partida.partida(1, 6)
     if main_menu.exit_game_btn.draw(screen):
         pygame.quit()
         sys.exit()

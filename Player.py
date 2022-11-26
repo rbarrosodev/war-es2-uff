@@ -91,13 +91,12 @@ class player:
     
     ############################# GESTAO DE EXERCITOS ##################################
 
-    def allocate_reserve( self , terr, amount ):
+    def allocate_reserve(self, terr, amount ):
         #Raise trocado por print para não parar a run
         if terr not in self.territorios:
             print( f"Esse player não tem o territorio {terr.nome}" )
             return False
         
-        print(self)
         if self.reserves < amount:
             print( f"Esse player não reservas suficientes {str(self.reserves)} < {str(amount)}" )
             return False
@@ -105,11 +104,6 @@ class player:
         
         self.reserves -= amount
         terr.tropas += amount
-    
-    def allocate_reserve_loop(self):
-        while(self.reserves != 0):
-            territory, amount = self.get_allocate_reserve_input()
-            self.allocate_reserve(territory, amount)
     
     #Função para pegar numero de novos soldados no começo do round
     def get_round_reserve(self):
@@ -128,32 +122,27 @@ class player:
             #25, 30, 35 ...
             self.reserves += 5 * (self.card_exchange - 2)
 
-        #Falta mplementar remoção das cartas do player ..
+        #Falta implementar remoção das cartas do player ..
 
-    def move_army_terr( self , terr_start , terr_end ):
+    def move_army_terr(self , terr_origin , terr_target, amount):
 
         #---------------------------------------------------------------
-        # Ambos territorios devem estar sob posse do jogador
-        for terr in ( terr_start , terr_end ):
-            if terr not in self.territorios:
-                raise ValueError( f"Esse player não tem o territorio {terr.nome}" )
+        # Esta sendo usado para ataque também
+        # if terr_origin not in self.territorios or terr_target not in self.territorios:
+        #     print( f"Esse player não tem o territorio " )
         
         #--------------------------------------------------------------
-        # O territorio de origem nao pode estar sem tropas.
-        if terr_start.tropas == 1:
-            raise ValueError(
-                f"O territorio {terr_start.nome} não tem nenhuma tropa"
-            )
+        # O territorio de origem nao pode ficar sem troaps.
+        if terr_origin.tropas - amount <= 1:
+            print(f"O territorio {terr_origin.nome} não tem nenhuma tropa")
 
         #-------------------------------------------------------------
         # Os territorios em questão devem fazer fronteira um com outro
-        if terr_start not in set( terr_end.vizinhos):
-            raise ValueError(
-                f"{terr_start} nao é um territorio adjacente a {terr_end.nome}" 
-            )
+        if terr_origin not in set( terr_target.vizinhos):
+            print(f"{terr_origin} nao é um territorio adjacente a {terr_target.nome}" )
         
-        terr_start.tropas -= 1
-        terr_end.tropas -= 1
+        terr_origin.tropas -= amount
+        terr_target.tropas += amount
 
     #Testar se tem tropas disponiveis para ataque
     def available_for_attack(self):

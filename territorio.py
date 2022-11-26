@@ -58,5 +58,5 @@ class territorio:
         return ter_d, list( ter_d.values() )
     
     def print_neighbors_names(self):
-        for i in self.territorios:
+        for i in self.vizinhos:
             print(str(i.idt) + ": " + i.nome)
