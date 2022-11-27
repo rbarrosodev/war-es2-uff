@@ -18,8 +18,8 @@ pygame.display.set_caption('WAR')
 screen = pygame.display.set_mode((1600, 900))
 
 main_menu = MainMenu()
-game = Game()
 ps = PlayersSelection()
+game = Game()
 
 while globals.GAME_STATE != 50:
     pygame.event.get()
@@ -43,8 +43,8 @@ while globals.GAME_STATE != 50:
             pygame.display.update()
 
     elif globals.GAME_STATE == 2:
-        print('entrou')
-        Partida.partida(ps.n_players, ps.cores_disponiveis, ps.cores_escolhidas)
+        gm_prepare = Partida.partida(ps.n_players, ps.cores_disponiveis, ps.cores_escolhidas)
+        game.run(screen, gm_prepare.players_list)
 
     pygame.display.update()
     mainClock.tick(60)

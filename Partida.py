@@ -27,65 +27,27 @@ class partida:
         self.territorios_dict = {}  # Dicionario de territórios para ser acessado pela partida
         self.over = False
 
-        # ---------------------------------------------------------------------------------------
-        # # essa parte deveria checar se existe um n�mero suficiente de jogadores para jogar o jogo
-        # # qualquer coisa acerta esse if
-        # if (self.n_players == 1):
-        #     print("A partida não pode ser criada")
-        #     del self
-        #     return
-
-        # ---------------------------------------------------------------------------------------
         # embaralhar as cartas objetivo e distribuí-las(várias maneiras de fazer isso)Ainda não implementei
         goal_cards = CartaObj.cartaObj.gerar_cartas()
         random.shuffle(goal_cards)
         self.goal_cards = goal_cards[: self.n_players]
 
-        # # aqui seria a escolha das cores
-        # cores_disponiveis = [True] * len(CORES)
-        # cores_escolhidas = []
-        # for x in range(n_humans):
-        #     while True:
-        #         print(f"Jogador {x} escolha a sua cor:")
-        #         for i, cor in enumerate(CORES):
-        #             if not cores_disponiveis[i]:
-        #                 continue
-        #             print(f"{i} -> {cor}")
-        #         print()
-        #
-        #         try:
-        #             cor_escolhida = int(input("Digite um número: "))
-        #         except ValueError:
-        #             print("Entrada Inválida")
-        #             continue
-        #
-        #         if cor_escolhida > len(CORES) or cor_escolhida < 0:
-        #             print("Entrada Inválida")
-        #             continue
-        #
-        #         if not cores_disponiveis[cor_escolhida]:
-        #             print("Essa cor ja foi escolhida")
-        #             continue
-        #
-        #         cores_disponiveis[cor_escolhida] = False
-        #         Cor = CORES[cor_escolhida]
-        #         cores_escolhidas.append(Cor)
-        #         break
-
-        # ---------------------------------------------------------------------
         # criar jogadores
         self.v_player = []
         for cor, card in zip(self.cores_escolhidas, self.goal_cards[:self.n_humans]):
-            self.v_player.append(Player.player(card, True, cor, False))
+            plyr = Player.player(card, True, cor, False)
+            self.v_player.append(plyr)
+            print(plyr)
+        self.v_player.reverse()
 
         # ---------------------------------------------------------------------
         # inicializar npc
         self.npcs = []
-        if self.n_npcs != 0:
-            remaining_colors = [cor for i, cor in enumerate(CORES) if self.cores_disponiveis[i]]
-            npc_goal_cards = self.goal_cards[self.n_humans:]
-            for cor, card in zip(remaining_colors, npc_goal_cards):
-                self.npcs.append(Player.player(card, True, cor, True))
+        # if self.n_npcs != 0:
+        #     remaining_colors = [cor for i, cor in enumerate(CORES) if self.cores_disponiveis[i]]
+        #     npc_goal_cards = self.goal_cards[self.n_humans:]
+        #     for cor, card in zip(remaining_colors, npc_goal_cards):
+        #         self.npcs.append(Player.player(card, True, cor, True))
 
                 # ---------------------------------------------------------------------
         # distribuicao de territorios 
@@ -101,23 +63,21 @@ class partida:
 
         # Lista geral (players + npc)
         self.players_list = list(players)
+        print(self.players_list)
 
-        # Inicio do jogo
-        for player in (self.players_list):
-
-            if not player.is_npc:
-                print(player.cor)
-                # Para debug
-                player.print_territories_names()
-
-                player.reserves = player.get_round_reserve()
-                self.allocate_reserve_loop(player)
-            else:
-                # Realizar Lógica da IA para colocar tropas
-                pass
-
-        # Após preparação, iniciar game_loop
-        self.game_loop()
+        # # Inicio do jogo
+        # for player in (self.players_list):
+        #     if not player.is_npc:
+        #         player.print_territories_names()
+        #
+        #         player.reserves = player.get_round_reserve()
+        #         # self.allocate_reserve_loop(player)
+        #     else:
+        #         # Realizar Lógica da IA para colocar tropas
+        #         pass
+        #
+        # # Após preparação, iniciar game_loop
+        # self.game_loop()
 
     # Fase inicial da rodada
     def fase_de_tropas(self, player):
