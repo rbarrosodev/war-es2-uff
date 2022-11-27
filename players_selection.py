@@ -8,7 +8,7 @@ import globals
 
 class PlayersSelection:
     def __init__(self):
-        self.CORES = ["branco", "preto", "vermelho", "azul", "amarelo", "verde"]
+        self.CORES = ["white", "black", "red", "blue", "yellow", "green"]
         self.n_players = 0
         self.actual_player = 1
         self.player_selecting = True
@@ -88,35 +88,41 @@ class PlayersSelection:
                                               (255, 255, 255))
             scr.blit(player_text, ((scr.get_rect().width / 2) - 500, 200))
 
-            if white_plyr_btn.draw(scr):
-                self.cores_disponiveis[0] = False
-                cor = self.CORES[0]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
-            if black_plyr_btn.draw(scr):
-                self.cores_disponiveis[1] = False
-                cor = self.CORES[1]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
-            if red_plyr_btn.draw(scr):
-                self.cores_disponiveis[2] = False
-                cor = self.CORES[2]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
-            if blue_plyr_btn.draw(scr):
-                self.cores_disponiveis[3] = False
-                cor = self.CORES[3]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
-            if yellow_plyr_btn.draw(scr):
-                self.cores_disponiveis[4] = False
-                cor = self.CORES[4]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
-            if green_plyr_btn.draw(scr):
-                self.cores_disponiveis[5] = False
-                cor = self.CORES[5]
-                self.cores_escolhidas.append(cor)
-                self.actual_player += 1
+            if self.cores_disponiveis[0]:
+                if white_plyr_btn.draw(scr):
+                    self.cores_disponiveis[0] = False
+                    cor = self.CORES[0]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
+            if self.cores_disponiveis[1]:
+                if black_plyr_btn.draw(scr):
+                    self.cores_disponiveis[1] = False
+                    cor = self.CORES[1]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
+            if self.cores_disponiveis[2]:
+                if red_plyr_btn.draw(scr):
+                    self.cores_disponiveis[2] = False
+                    cor = self.CORES[2]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
+            if self.cores_disponiveis[3]:
+                if blue_plyr_btn.draw(scr):
+                    self.cores_disponiveis[3] = False
+                    cor = self.CORES[3]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
+            if self.cores_disponiveis[4]:
+                if yellow_plyr_btn.draw(scr):
+                    self.cores_disponiveis[4] = False
+                    cor = self.CORES[4]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
+            if self.cores_disponiveis[5]:
+                if green_plyr_btn.draw(scr):
+                    self.cores_disponiveis[5] = False
+                    cor = self.CORES[5]
+                    self.cores_escolhidas.append(cor)
+                    self.actual_player += 1
 
             pygame.display.update()

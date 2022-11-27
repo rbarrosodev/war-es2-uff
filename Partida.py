@@ -37,8 +37,6 @@ class partida:
         for cor, card in zip(self.cores_escolhidas, self.goal_cards[:self.n_humans]):
             plyr = Player.player(card, True, cor, False)
             self.v_player.append(plyr)
-            print(plyr)
-        self.v_player.reverse()
 
         # ---------------------------------------------------------------------
         # inicializar npc
@@ -255,17 +253,17 @@ class partida:
         else:
             return 3
 
-    def get_allocate_reserve_input(self):
-        # Mudar essa função depois para receber inputs por clique no mapa e input na tela
-        id = int(input("ID do territorio: "))
-        amount = int(input("Escolha a quantidade de tropas para colocar: "))
-
-        return self.territorios_dict[id], amount
-
-    def allocate_reserve_loop(self, player):
-        while (player.reserves != 0):
-            territory, amount = self.get_allocate_reserve_input()
-            player.allocate_reserve(territory, amount)
+    # def get_allocate_reserve_input(self):
+    #     # Mudar essa função depois para receber inputs por clique no mapa e input na tela
+    #     id = int(input("ID do territorio: "))
+    #     amount = int(input("Escolha a quantidade de tropas para colocar: "))
+    #
+    #     return self.territorios_dict[id], amount
+    #
+    # def allocate_reserve_loop(self, player):
+    #     while player.reserves != 0:
+    #         territory, amount = self.get_allocate_reserve_input()
+    #         player.allocate_reserve(territory, amount)
 
     def game_loop(self):
         rodada = 1

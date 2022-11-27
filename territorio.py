@@ -1,15 +1,15 @@
 import pandas as pd
 
 class territorio:
-
-    def __init__( self , nome , idt , continente ,vizinhos = None ):
-
+    def __init__(self, nome, idt, continente, pos_x, pos_y, vizinhos = None):
         self.nome = nome 
         self.idt = idt
         if vizinhos is None:
             vizinhos = list() 
         self.vizinhos = vizinhos 
         self.continente = continente
+        self.pos_x = pos_x
+        self.pos_y = pos_y
 
         self.tropas = 1
         self.player = None
@@ -40,8 +40,11 @@ class territorio:
         for i , rec in terr_df.iterrows():
             nome = rec["Nome"]
             cont = rec["Continente_id"]
-            terr = territorio( nome , i , cont )
-            ter_d[ i ] = terr
+            position_x = rec["Position_x"]
+            position_y = rec["Position_y"]
+            terr = territorio(nome, i, cont, position_x, position_y)
+            # print(nome, i)
+            ter_d[i] = terr
         
         border_df = pd.read_csv("Mapa/Fronteiras.csv")
         for _ , rec in border_df.iterrows():
