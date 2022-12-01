@@ -8,6 +8,9 @@ class Button:
         self.rect.topleft = (x, y)
         self.clicked = False
 
+    def set_coords(self, x, y):
+        self.rect.topleft = (x, y)
+
     def draw(self, scr):
         action = False
 
