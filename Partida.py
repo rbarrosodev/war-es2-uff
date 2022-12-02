@@ -202,7 +202,7 @@ class partida:
             pass
         if(len(player.territorios) == 42):
             print("O player %s ganhou!", player.cor)
-            self.over = True.
+            self.over = True
 
     # fase de movimentação
     def fase_movimento(self, player):
