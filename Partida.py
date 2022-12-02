@@ -200,6 +200,9 @@ class partida:
         else:
             # Realizar Lógica da IA para combate
             pass
+        if(len(player.territorios) == 42):
+            print("O player %s ganhou!", player.cor)
+            self.over = True.
 
     # fase de movimentação
     def fase_movimento(self, player):
